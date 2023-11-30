@@ -9,6 +9,38 @@ module.exports = defineConfig({
       maskIcon: 'images/logo.png',
       msTileImage: 'images/logo.png',
     },
-     
+    manifestOptions: {
+      name: "Fabricator",
+      short_name: "Fabricator",
+      description: "Fabricator",
+      start_url: "./",
+      display: "standalone",
+      background_color: "#ffffff",
+      theme_color: "#000000",
+      orientation: "portrait",
+      "icons": [
+        {
+          "src": "img/logo.png",
+          "sizes": "72x72",
+          "type": "image/png"
+        },
+        {
+          "src": "img/logo.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        },
+        {
+          "src": "img/logo.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+      ],
+      workboxPluginMode: 'InjectManifest',
+      workboxOptions: {
+        swSrc: 'src/sw.js', // path to your customized service worker file
+        swDest: 'service-worker.js', // output path in the dist folder
+      },
+      // Add more options as needed
+    }, 
   }
 })
