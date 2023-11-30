@@ -1,8 +1,7 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App" />
-  <button v-if="showInstallButton" @click="installApp">Install App</button>
-
+  <button class="btn btn-info w-100" v-if="showInstallButton" @click="installApp">Install App</button>
 </template>
 
 <script>
