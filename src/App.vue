@@ -50,27 +50,6 @@ export default {
       this.showInstallAlert();
     },
     showInstallAlert() {
-      // You can customize the alert message
-      const isConfirmed = window.confirm('Do you want to install this app?');
-
-      if (isConfirmed) {
-        // If the user confirms, show the browser's install prompt
-        this.deferredPrompt.prompt();
-
-        // Wait for the user to respond to the prompt
-        this.deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the install prompt');
-          } else {
-            console.log('User dismissed the install prompt');
-          }
-
-          // Reset the deferredPrompt
-          this.deferredPrompt = null;
-        });
-      }
-    },
-    showInstallAlert() {
       // Set the flag to true to show the install popup
       this.showInstallPopup = true;
     },
