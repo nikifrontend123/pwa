@@ -2,18 +2,12 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
   pwa: {
-    name: 'Brand App',
-    themeColor: '#4DBA87',
-    msTileColor: '#000000',
-    appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'black',
-    workboxPluginMode: 'GenerateSW',
     iconPaths: {
       favicon32: 'img/logo.png',
       favicon16: 'img/logo.png',
-      appleTouchIcon: 'img/logo.png',
-      maskIcon: 'img/logo.png',
-      msTileImage: 'img/logo.png',
+      appleTouchIcon: 'images/logo.png',
+      maskIcon: 'images/logo.png',
+      msTileImage: 'images/logo.png',
     },
     manifestOptions: {
       name: "Fabricator",
