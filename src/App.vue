@@ -1,7 +1,7 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
+  <!-- <button class="btn btn-info w-100" v-if="showInstallButton" @click="installApp">Install App</button> -->
   <HelloWorld msg="Welcome to Your Vue.js App" />
-  <button class="btn btn-info w-100" v-if="showInstallButton" @click="installApp">Install App</button>
 </template>
 
 <script>
@@ -12,24 +12,17 @@ export default {
   data() {
     return {
       deferredPrompt: null,
-      showInstallButton: false,
-      showInstallPopup: false,
+      // showInstallButton: false,
+      // showInstallPopup: false,
     };
   },
   components: {
     HelloWorld
   },
-  mounted() {
-    // Delay the installation prompt by 1 second
-    setTimeout(() => {
-      this.showInstallPopup = true;
-    }, 1000);
-
-    // Add event listener for beforeinstallprompt
+  created() {
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
   },
   unmounted() {
-    // Remove event listener when the component is unmounted
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
   },
   methods: {
@@ -40,12 +33,15 @@ export default {
       // Store the event for later use
       this.deferredPrompt = event;
 
-      // Show the install button
-      this.showInstallButton = true;
+      // Show a browser-style alert immediately
+      this.showInstallAlert();
     },
-    installApp() {
-      if (this.deferredPrompt) {
-        // Show the browser's install prompt
+    showInstallAlert() {
+      // You can customize the alert message
+      const isConfirmed = window.confirm('Do you want to install this app?');
+
+      if (isConfirmed) {
+        // If the user confirms, show the browser's install prompt
         this.deferredPrompt.prompt();
 
         // Wait for the user to respond to the prompt
@@ -56,13 +52,12 @@ export default {
             console.log('User dismissed the install prompt');
           }
 
-          // Reset the deferredPrompt and hide the install button
+          // Reset the deferredPrompt
           this.deferredPrompt = null;
-          this.showInstallButton = false;
         });
       }
     },
-  }
+  },
 }
 </script>
 
