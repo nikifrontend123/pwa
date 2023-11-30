@@ -1,6 +1,7 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <button v-if="showInstallButton" @click="handleInstallButtonClick">Install App</button>
+  <!-- <button v-if="showInstallButton" @click="handleInstallButtonClick">Install App</button> -->
+
   <div v-if="showInstallPopup" class="install-popup">
     <div class="install-popup-content">
       <p>Do you want to install this app?</p>
@@ -20,6 +21,7 @@ export default {
     return {
       deferredPrompt: null,
       showInstallButton: false,
+      showInstallPopup: false,
     };
   },
   components: {
@@ -27,6 +29,7 @@ export default {
   },
   created() {
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
+    // this.showInstallAlert()
     // this.installApp(); // Remove this line, as we want to show the button only when the user clicks it
   },
   unmounted() {
@@ -34,7 +37,16 @@ export default {
   },
   methods: {
     // ... your existing methods ...
+    handleInstallPrompt(event) {
+      // Prevent the default behavior to show the browser's install prompt
+      event.preventDefault();
 
+      // Store the event for later use
+      this.deferredPrompt = event;
+
+      // Show a browser-style alert immediately
+      this.showInstallAlert();
+    },
     showInstallAlert() {
       // Set the flag to true to show the install popup
       this.showInstallPopup = true;
@@ -77,6 +89,7 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 .install-popup {
   position: fixed;
   top: 50%;
