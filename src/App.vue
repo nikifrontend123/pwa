@@ -1,5 +1,12 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
+  <div v-if="showInstallPopup" class="install-popup">
+    <div class="install-popup-content">
+      <p>Do you want to install this app?</p>
+      <button @click="installApp">Install</button>
+      <button @click="dismissInstall">Dismiss</button>
+    </div>
+  </div>
   <!-- <button class="btn btn-info w-100" v-if="showInstallButton" @click="installApp">Install App</button> -->
   <HelloWorld msg="Welcome to Your Vue.js App" />
 </template>
