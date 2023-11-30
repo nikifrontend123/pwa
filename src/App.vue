@@ -20,7 +20,12 @@ export default {
     HelloWorld
   },
   created() {
-    window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
+      console.log('Event listener added for beforeinstallprompt');
+    } else {
+      console.warn('Service workers or PushManager not supported');
+    }
   },
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
@@ -57,6 +62,7 @@ export default {
         });
       }
     },
+
   },
 }
 </script>
