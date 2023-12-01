@@ -27,14 +27,19 @@ export default {
     HelloWorld
   },
   created() {
-    window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
-    if ('getInstalledRelatedApps' in navigator) {
-      navigator.getInstalledRelatedApps().then(apps => {
-        this.isAppInstalled = apps.length > 0;
-      });
-    }
-    // this.installApp(); // Remove this line, as we want to show the button only when the user clicks it
-  },
+  window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
+
+  // Check if the app is already installed
+  if ('getInstalledRelatedApps' in navigator) {
+    navigator.getInstalledRelatedApps().then(apps => {
+      this.isAppInstalled = apps.length > 0;
+
+      // Check whether to redirect or show the install button
+      this.checkAppInstalled();
+    });
+  }
+},
+
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
   },
