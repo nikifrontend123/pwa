@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="p-2 bg-dark w-100">
-      Version 1.1
+    <div class="p-2 text-bg-dark w-100">
+      Version 1.12
     </div>
     <img alt="Vue logo" src="./assets/logo.png">
     <div v-if="showInstallPopup" class="install-popup">
