@@ -46,6 +46,29 @@ export default {
         console.error("Error fetching installed related apps:", error);
       });
   },
+  mounted() {
+    var browserName = '';
+    var userAgent = navigator.userAgent.toLowerCase();
+
+    if (userAgent.indexOf('firefox') > -1) {
+      browserName = 'Mozilla Firefox';
+    } else if (userAgent.indexOf('chrome') > -1) {
+      browserName = 'Google Chrome';
+    } else if (userAgent.indexOf('safari') > -1) {
+      browserName = 'Apple Safari';
+    } else if (userAgent.indexOf('opera') > -1 || userAgent.indexOf('opr') > -1) {
+      browserName = 'Opera';
+    } else if (userAgent.indexOf('edge') > -1) {
+      browserName = 'Microsoft Edge';
+    } else if (userAgent.indexOf('msie') > -1 || userAgent.indexOf('trident') > -1) {
+      browserName = 'Internet Explorer';
+    } else {
+      browserName = 'Unknown';
+    }
+
+    console.log('Browser: ' + browserName);
+
+  },
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
   },
