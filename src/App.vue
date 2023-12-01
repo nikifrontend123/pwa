@@ -1,16 +1,21 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <div v-if="showInstallPopup" class="install-popup">
-    <div class="install-popup-content">
-      <p>Do you want to install this app?</p>
-      <button @click="installApp">Install</button>
-      <button @click="dismissInstall">Dismiss</button>
+  <div>
+    <div class="p-2 bg-dark w-100">
+      Version 1.1
     </div>
-  </div>
-  <!-- Example deep links -->
-   <a href="myapp://path/to/content">Open MyApp on Android</a>
+    <img alt="Vue logo" src="./assets/logo.png">
+    <div v-if="showInstallPopup" class="install-popup">
+      <div class="install-popup-content">
+        <p>Do you want to install this app?</p>
+        <button @click="installApp">Install</button>
+        <button @click="dismissInstall">Dismiss</button>
+      </div>
+    </div>
+    <!-- Example deep links -->
+    <a href="myapp://path/to/content">Open MyApp on Android</a>
 
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+    <HelloWorld msg="Welcome to Your Vue.js App" />
+  </div>
 </template>
 
 <script>
