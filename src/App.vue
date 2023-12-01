@@ -20,6 +20,7 @@ export default {
       deferredPrompt: null,
       showInstallButton: false,
       showInstallPopup: false,
+      isAppInstalled: false,
     };
   },
   components: {
@@ -27,7 +28,11 @@ export default {
   },
   created() {
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
-    this.checkAppInstalled
+    if ('getInstalledRelatedApps' in navigator) {
+      navigator.getInstalledRelatedApps().then(apps => {
+        this.isAppInstalled = apps.length > 0;
+      });
+    }
     // this.installApp(); // Remove this line, as we want to show the button only when the user clicks it
   },
   unmounted() {
@@ -50,23 +55,22 @@ export default {
       this.showInstallPopup = true;
     },
     installApp() {
-      // If the user clicks "Install," show the browser's install prompt
-      this.deferredPrompt.prompt();
+      if (this.deferredPrompt) {
+        // If the user confirms, show the browser's install prompt
+        this.deferredPrompt.prompt();
 
-      // Wait for the user to respond to the prompt
-      this.deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-        }
+        // Wait for the user to respond to the prompt
+        this.deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          } else {
+            console.log('User dismissed the install prompt');
+          }
 
-        // Reset the deferredPrompt
-        this.deferredPrompt = null;
-
-        // Close the install popup
-        this.showInstallPopup = false;
-      });
+          // Reset the deferredPrompt
+          this.deferredPrompt = null;
+        });
+      }
     },
     dismissInstall() {
       // If the user clicks "Dismiss," close the install popup
@@ -86,8 +90,14 @@ export default {
       }
     },
     redirectToApp() {
-      // Replace 'your-app-url' with the actual URL of your app
-      window.location.replace('your-app-url');
+      // Check if the app is installed
+      if (this.isAppInstalled) {
+        // Redirect to the app URL (replace 'your-app-url' with the actual URL)
+        window.location.href = 'your-app-url';
+      } else {
+        // Show the install prompt
+        this.installApp();
+      }
     },
   },
 }
