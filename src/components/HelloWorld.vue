@@ -28,18 +28,10 @@ export default {
 
     },
     redirectToApp() {
-      if (this.isAppInstalled) {
+        console.log('redirecting')
         // Try to open the app using deep linking
-        window.location.href = 'myapp://path/to/content';
-
-        // Set a longer timeout for the fallback URL if the app doesn't open
-        setTimeout(() => {
-          window.location.href = 'https://65696ff4bb909255ee04d781--radiant-mermaid-5d059e.netlify.app/';
-        }, 5000); // 5 seconds timeout (adjust as needed)
-      } else {
-        // Show the install prompt
-        this.installApp();
-      }
+        window.location.href = 'pwa:http://radiant-mermaid-5d059e.netlify.app';
+      
     },
     dismissPrompt() {
       this.showPrompt = false;

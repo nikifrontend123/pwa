@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="p-2 text-bg-dark w-100">
-      Version 1.12
+      Version 1.13
     </div>
     <img alt="Vue logo" src="./assets/logo.png">
     <div v-if="showInstallPopup" class="install-popup">
@@ -36,21 +36,24 @@ export default {
   },
   created() {
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
-      // Check if the app is already installed
-      if ('getInstalledRelatedApps' in navigator) {
-        navigator.getInstalledRelatedApps().then(apps => {
-          this.isAppInstalled = apps.length > 0;
 
-          // Check whether to redirect or show the install button
-          if (this.isAppInstalled) {
-            console.log('App is installed');
-            this.redirectToApp();
-          } else {
-            console.log('App is not installed');
-            // Optionally, you can show the install button here
-          }
-        });
+    self.addEventListener('fetch', function(event) {
+      if (event.request.url.startsWith('pwa:')) {
+        event.respondWith(navigator.serviceWorker.ready.then(function(registration) {
+          return registration.showNotification('PWA available', {
+            body: 'Click to open the PWA',
+            tag: 'pwa-open'
+          });
+        }));
       }
+    });
+
+    self.addEventListener('notificationclick', function(event) {
+      if (event.notification.tag === 'pwa-open') {
+        event.notification.close();
+        event.waitUntil(self.clients.openWindow('pwa:http://radiant-mermaid-5d059e.netlify.app'));
+      }
+    });
   },
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
@@ -116,12 +119,12 @@ export default {
     redirectToApp() {
       if (this.isAppInstalled) {
         // Try to open the app using deep linking
-        window.location.href = 'myapp://path/to/content';
+        window.location.href = 'pwa:http://radiant-mermaid-5d059e.netlify.app';
 
         // Set a longer timeout for the fallback URL if the app doesn't open
-        setTimeout(() => {
-          window.location.href = 'https://65696ff4bb909255ee04d781--radiant-mermaid-5d059e.netlify.app/';
-        }, 5000); // 5 seconds timeout (adjust as needed)
+        // setTimeout(() => {
+        //   window.location.href = 'https://radiant-mermaid-5d059e.netlify.app/';
+        // }, 5000); // 5 seconds timeout (adjust as needed)
       } else {
         // Show the install prompt
         this.installApp();
