@@ -28,6 +28,23 @@ export default {
   created() {
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
     // this.installApp(); // Remove this line, as we want to show the button only when the user clicks it
+    navigator.getInstalledRelatedApps()
+      .then((relatedApps) => {
+        // Dump all the returned related apps into a table in the console
+        console.table(relatedApps);
+
+        // Search for a specific installed platform-specific app
+        const psApp = relatedApps.find((app) => app.id === "lmjpkknnlcmaaghpglnpjmpaggklbkpp");
+
+        if (psApp && this.doesVersionSendPushMessages(psApp.version)) {
+          // There’s an installed platform-specific app that handles sending push messages
+          // No need to handle this via the web app
+          return;
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching installed related apps:", error);
+      });
   },
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);

@@ -1,7 +1,7 @@
 <template>
   <div v-if="showPrompt" class="pwa-prompt">
     <p>Do you want to use our PWA for a better experience?</p>
-    <button @click="redirectToPwa">Yes, switch to PWA</button>
+    <button @click="handleBeforeInstallPrompt">Yes, switch to PWA</button>
     <button @click="dismissPrompt">No, thanks</button>
   </div>
 </template>
@@ -22,7 +22,25 @@ export default {
         this.showPrompt = true;
       }
     },
+    async handleBeforeInstallPrompt(event) {
+      try {
+        const relatedApps = await navigator.getInstalledRelatedApps();
+
+        // Search for a specific installed platform-specific app
+        const psApp = relatedApps.find((app) => app.id === "com.example.myapp");
+
+        if (psApp) {
+          event.preventDefault();
+          // Update UI as appropriate
+        }
+      } catch (error) {
+        console.error("Error fetching installed related apps:", error);
+      }
+    },
     redirectToPwa() {
+
+
+
       // Logic to redirect to the PWA
       // This might involve navigating to a URL or providing instructions
     },
