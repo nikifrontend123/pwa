@@ -7,6 +7,10 @@
       <button @click="dismissInstall">Dismiss</button>
     </div>
   </div>
+  <!-- Example deep links -->
+<a href="myapp://path/to/content">Open MyApp on iOS</a>
+<a href="intent://path/to/content#Intent;scheme=myapp;end">Open MyApp on Android</a>
+
   <HelloWorld msg="Welcome to Your Vue.js App" />
 </template>
 
