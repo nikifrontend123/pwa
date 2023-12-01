@@ -1,7 +1,5 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <!-- <button v-if="showInstallButton" @click="handleInstallButtonClick">Install App</button> -->
-
   <div v-if="showInstallPopup" class="install-popup">
     <div class="install-popup-content">
       <p>Do you want to install this app?</p>
@@ -29,15 +27,15 @@ export default {
   },
   created() {
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
-    // this.showInstallAlert()
+    this.checkAppInstalled
     // this.installApp(); // Remove this line, as we want to show the button only when the user clicks it
   },
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
   },
   methods: {
-    // ... your existing methods ...
     handleInstallPrompt(event) {
+
       // Prevent the default behavior to show the browser's install prompt
       event.preventDefault();
 
@@ -51,7 +49,6 @@ export default {
       // Set the flag to true to show the install popup
       this.showInstallPopup = true;
     },
-
     installApp() {
       // If the user clicks "Install," show the browser's install prompt
       this.deferredPrompt.prompt();
@@ -71,10 +68,26 @@ export default {
         this.showInstallPopup = false;
       });
     },
-
     dismissInstall() {
       // If the user clicks "Dismiss," close the install popup
       this.showInstallPopup = false;
+    },
+    checkAppInstalled() {
+      if ('getInstalledRelatedApps' in navigator) {
+        navigator.getInstalledRelatedApps().then((relatedApps) => {
+          if (relatedApps.length > 0) {
+            console.log('App is installed');
+            this.redirectToApp();
+          } else {
+            console.log('App is not installed');
+            // Optionally, you can show the install button here
+          }
+        });
+      }
+    },
+    redirectToApp() {
+      // Replace 'your-app-url' with the actual URL of your app
+      window.location.replace('your-app-url');
     },
   },
 }
