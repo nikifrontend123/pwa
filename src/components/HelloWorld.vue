@@ -30,7 +30,8 @@ export default {
     redirectToApp() {
         console.log('redirecting')
         // Try to open the app using deep linking
-        window.location.href = 'fabricator://';
+        window.location.href = './';
+        // window.location.replace = ('pwa://radiant-mermaid-5d059e.netlify.app/');
       
     },
     dismissPrompt() {

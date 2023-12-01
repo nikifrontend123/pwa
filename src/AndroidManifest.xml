@@ -5,8 +5,8 @@
         <category android:name="android.intent.category.BROWSABLE" />
         <data
             android:scheme="fabricator"
-            android:host="netlify.com"  
+            android:host="https://65698dd8e2501f6a57df4e43--radiant-mermaid-5d059e.netlify.app/"  
             android:pathPattern="/.*"
-            />
+        />
     </intent-filter>
 </activity>
