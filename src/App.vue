@@ -47,6 +47,9 @@ export default {
       // Store the event for later use
       this.deferredPrompt = event;
 
+      // Show the install button
+      this.showInstallButton = true;
+
       // Show a browser-style alert immediately
       this.showInstallAlert();
     },
@@ -92,8 +95,8 @@ export default {
     redirectToApp() {
       // Check if the app is installed
       if (this.isAppInstalled) {
-        // Redirect to the app URL (replace 'your-app-url' with the actual URL)
-        window.location.href = 'your-app-url';
+        // Redirect to the app URL
+        window.location.href = 'https://65696ff4bb909255ee04d781--radiant-mermaid-5d059e.netlify.app/';
       } else {
         // Show the install prompt
         this.installApp();
