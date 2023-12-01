@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="p-2 text-bg-dark w-100">
-      Version 1.13
+      Version 1.15
     </div>
     <img alt="Vue logo" src="./assets/logo.png">
     <div v-if="showInstallPopup" class="install-popup">
@@ -13,7 +13,7 @@
     </div>
     <!-- Example deep links -->
     <!-- <a  href="fabricator://">Open PWA App</a> -->
-    <a  href="android:pathPattern">Open PWA App</a>
+    <a  href="scheme:host">Open PWA App</a>
     
     <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>

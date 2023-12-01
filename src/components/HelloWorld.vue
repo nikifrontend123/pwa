@@ -28,11 +28,19 @@ export default {
 
     },
     redirectToApp() {
-        console.log('redirecting')
-        // Try to open the app using deep linking
-        window.location.href = './';
-        // window.location.replace = ('pwa://radiant-mermaid-5d059e.netlify.app/');
-      
+      console.log('redirecting')
+      // Try to open the app using deep linking
+      if ('serviceWorker' in navigator && 'Notification' in window) {
+        navigator.serviceWorker.ready.then((registration) => {
+          if (registration.navigationPreload) {
+            // PWA is installed, redirect to PWA
+            window.location.href = '/netlify.com';
+          }
+        });
+      }
+      // window.location.href = '/netlify.com';
+      // window.location.replace = ('pwa://radiant-mermaid-5d059e.netlify.app/');
+
     },
     dismissPrompt() {
       this.showPrompt = false;
