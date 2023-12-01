@@ -40,7 +40,7 @@ module.exports = defineConfig({
       related_applications: [
         {
           platform: 'play',
-          url: 'https://play.google.com/store/apps/details?id=com.example.myapp',
+          url: 'https://65697b40e2501f5f8fdf4e45--radiant-mermaid-5d059e.netlify.app/',
         },
         {
           platform: 'itunes',
@@ -54,10 +54,9 @@ module.exports = defineConfig({
         swDest: 'service-worker.js', // output path in the dist folder
       },
       deepLinks: [
-        
         // Add deep linking configuration here
         {
-          start_url: 'myapp://path/to/content',
+          start_url: 'https://65697b40e2501f5f8fdf4e45--radiant-mermaid-5d059e.netlify.app/',
           end_url: '/',
           id: 'com.example.myapp',
         },
