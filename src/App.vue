@@ -1,22 +1,13 @@
 <template>
-  <div>
-    <div class="p-2 text-bg-dark w-100">
-      Version 1.25
+  <img alt="Vue logo" src="./assets/logo.png">
+  <div v-if="showInstallPopup" class="install-popup">
+    <div class="install-popup-content">
+      <p>Do you want to install this app?</p>
+      <button @click="installApp">Install</button>
+      <button @click="dismissInstall">Dismiss</button>
     </div>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <div v-if="showInstallPopup" class="install-popup">
-      <div class="install-popup-content">
-        <p>Do you want to install this app?</p>
-        <button @click="installApp">Install</button>
-        <button @click="dismissInstall">Dismiss</button>
-      </div>
-    </div>
-    <!-- Example deep links -->
-    <!-- <a  href="fabricator://">Open PWA App</a> -->
-    <a  href="/radiant-mermaid-5d059e.netlify.app">Open PWA App</a>
-    
-    <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
+  <HelloWorld msg="Welcome to Your Vue.js App" />
 </template>
 
 <script>
@@ -29,7 +20,6 @@ export default {
       deferredPrompt: null,
       showInstallButton: false,
       showInstallPopup: false,
-      isAppInstalled: false,
     };
   },
   components: {
@@ -37,24 +27,7 @@ export default {
   },
   created() {
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
-
-    self.addEventListener('fetch', function(event) {
-      if (event.request.url.startsWith('pwa:')) {
-        event.respondWith(navigator.serviceWorker.ready.then(function(registration) {
-          return registration.showNotification('PWA available', {
-            body: 'Click to open the PWA',
-            tag: 'pwa-open'
-          });
-        }));
-      }
-    });
-
-    self.addEventListener('notificationclick', function(event) {
-      if (event.notification.tag === 'pwa-open') {
-        event.notification.close();
-        event.waitUntil(self.clients.openWindow('pwa:http://radiant-mermaid-5d059e.netlify.app'));
-      }
-    });
+    // this.installApp(); // Remove this line, as we want to show the button only when the user clicks it
   },
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
@@ -68,68 +41,35 @@ export default {
       // Store the event for later use
       this.deferredPrompt = event;
 
-      // Show the install button
-      this.showInstallButton = true;
-
       // Show a browser-style alert immediately
       this.showInstallAlert();
-
-      // Check if the app is installed
-      this.checkAppInstalled();
     },
     showInstallAlert() {
       // Set the flag to true to show the install popup
       this.showInstallPopup = true;
     },
     installApp() {
-      if (this.deferredPrompt) {
-        // If the user confirms, show the browser's install prompt
-        this.deferredPrompt.prompt();
+      // If the user clicks "Install," show the browser's install prompt
+      this.deferredPrompt.prompt();
 
-        // Wait for the user to respond to the prompt
-        this.deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the install prompt');
-          } else {
-            console.log('User dismissed the install prompt');
-          }
+      // Wait for the user to respond to the prompt
+      this.deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
 
-          // Reset the deferredPrompt
-          this.deferredPrompt = null;
-        });
-      }
+        // Reset the deferredPrompt
+        this.deferredPrompt = null;
+
+        // Close the install popup
+        this.showInstallPopup = false;
+      });
     },
     dismissInstall() {
       // If the user clicks "Dismiss," close the install popup
       this.showInstallPopup = false;
-    },
-    checkAppInstalled() {
-      console.log('Checking if the app is installed');
-      if ('getInstalledRelatedApps' in navigator) {
-        navigator.getInstalledRelatedApps().then((relatedApps) => {
-          if (relatedApps.length > 0) {
-            console.log('App is installed');
-            this.redirectToApp();
-          } else {
-            console.log('App is not installed');
-            // Optionally, you can show the install button here
-          }
-        });
-      }
-    },
-    redirectToApp() {
-      if (this.isAppInstalled) {
-        // Try to open the app using deep linking
-        window.location.href = 'pwa:http://radiant-mermaid-5d059e.netlify.app';
-
-        // Set a longer timeout for the fallback URL if the app doesn't open
-        // setTimeout(() => {
-        //   window.location.href = 'https://radiant-mermaid-5d059e.netlify.app/';
-        // }, 5000); // 5 seconds timeout (adjust as needed)
-      } else {
-        // Show the install prompt
-        this.installApp();
-      }
     },
   },
 }
