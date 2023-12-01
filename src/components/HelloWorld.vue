@@ -34,7 +34,7 @@ export default {
         navigator.serviceWorker.ready.then((registration) => {
           if (registration.navigationPreload) {
             // PWA is installed, redirect to PWA
-            window.location.href = '/netlify.com';
+            window.location.href = '/radiant-mermaid-5d059e.netlify.app';
           }
         });
       }
