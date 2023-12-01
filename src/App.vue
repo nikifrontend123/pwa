@@ -29,30 +29,24 @@ export default {
   components: {
     HelloWorld
   },
-  async mounted() {
-    await this.checkInstalledRelatedApps();
-  },
   created() {
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
+      // Check if the app is already installed
+      if ('getInstalledRelatedApps' in navigator) {
+        navigator.getInstalledRelatedApps().then(apps => {
+          this.isAppInstalled = apps.length > 0;
 
-    // Check if the app is already installed
-    if ('getInstalledRelatedApps' in navigator) {
-      navigator.getInstalledRelatedApps().then(apps => {
-        this.isAppInstalled = apps.length > 0;
-
-        // Check whether to redirect or show the install button
-        if (this.isAppInstalled) {
-          console.log('App is installed');
-          this.redirectToApp();
-        } else {
-          console.log('App is not installed');
-          // Optionally, you can show the install button here
-        }
-      });
-    }
+          // Check whether to redirect or show the install button
+          if (this.isAppInstalled) {
+            console.log('App is installed');
+            this.redirectToApp();
+          } else {
+            console.log('App is not installed');
+            // Optionally, you can show the install button here
+          }
+        });
+      }
   },
-
-
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
   },
@@ -128,30 +122,6 @@ export default {
         this.installApp();
       }
     },
-
-    async checkInstalledRelatedApps() {
-      try {
-        // Use Vue's $nextTick to ensure the DOM is updated before console.table
-        await this.$nextTick();
-
-        const relatedApps = await navigator.getInstalledRelatedApps();
-
-        // Dump all the returned related apps into a table in the console
-        console.table(relatedApps);
-
-        // Search for a specific installed platform-specific app
-        const psApp = relatedApps.find((app) => app.id === "com.example.myapp");
-
-        if (psApp && this.doesVersionSendPushMessages(psApp.version)) {
-          // There’s an installed platform-specific app that handles sending push messages
-          // No need to handle this via the web app
-          return;
-        }
-      } catch (error) {
-        console.error("Error checking installed related apps:", error);
-      }
-    },
-
   },
 }
 </script>
