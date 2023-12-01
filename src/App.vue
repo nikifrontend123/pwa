@@ -8,8 +8,8 @@
     </div>
   </div>
   <!-- Example deep links -->
-<a href="myapp://path/to/content">Open MyApp on iOS</a>
-<a href="intent://path/to/content#Intent;scheme=myapp;end">Open MyApp on Android</a>
+  <a href="myapp://path/to/content">Open MyApp on iOS</a>
+  <a href="intent://path/to/content#Intent;scheme=myapp;end">Open MyApp on Android</a>
 
   <HelloWorld msg="Welcome to Your Vue.js App" />
 </template>
@@ -30,19 +30,29 @@ export default {
   components: {
     HelloWorld
   },
+  async mounted(){
+    await this.checkInstalledRelatedApps();
+  },
   created() {
-  window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
+    window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
 
-  // Check if the app is already installed
-  if ('getInstalledRelatedApps' in navigator) {
-    navigator.getInstalledRelatedApps().then(apps => {
-      this.isAppInstalled = apps.length > 0;
+    // Check if the app is already installed
+    if ('getInstalledRelatedApps' in navigator) {
+      navigator.getInstalledRelatedApps().then(apps => {
+        this.isAppInstalled = apps.length > 0;
 
-      // Check whether to redirect or show the install button
-      this.checkAppInstalled();
-    });
-  }
-},
+        // Check whether to redirect or show the install button
+        if (this.isAppInstalled) {
+          console.log('App is installed');
+          this.redirectToApp();
+        } else {
+          console.log('App is not installed');
+          // Optionally, you can show the install button here
+        }
+      });
+    }
+  },
+
 
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
@@ -61,6 +71,9 @@ export default {
 
       // Show a browser-style alert immediately
       this.showInstallAlert();
+
+      // Check if the app is installed
+      this.checkAppInstalled();
     },
     showInstallAlert() {
       // Set the flag to true to show the install popup
@@ -89,6 +102,7 @@ export default {
       this.showInstallPopup = false;
     },
     checkAppInstalled() {
+      console.log('Checking if the app is installed');
       if ('getInstalledRelatedApps' in navigator) {
         navigator.getInstalledRelatedApps().then((relatedApps) => {
           if (relatedApps.length > 0) {
@@ -102,15 +116,42 @@ export default {
       }
     },
     redirectToApp() {
-      // Check if the app is installed
       if (this.isAppInstalled) {
-        // Redirect to the app URL
-        window.location.href = 'https://65696ff4bb909255ee04d781--radiant-mermaid-5d059e.netlify.app/';
+        // Try to open the app using deep linking
+        window.location.href = 'myapp://path/to/content';
+
+        // Set a timeout to navigate to the fallback URL if the app doesn't open
+        setTimeout(() => {
+          window.location.href = 'com.example.myapp';
+        }, 2000); // 2 seconds timeout (adjust as needed)
       } else {
         // Show the install prompt
         this.installApp();
       }
     },
+    async checkInstalledRelatedApps() {
+      try {
+        // Use Vue's $nextTick to ensure the DOM is updated before console.table
+        await this.$nextTick();
+
+        const relatedApps = await navigator.getInstalledRelatedApps();
+
+        // Dump all the returned related apps into a table in the console
+        console.table(relatedApps);
+
+        // Search for a specific installed platform-specific app
+        const psApp = relatedApps.find((app) => app.id === "com.example.myapp");
+
+        if (psApp && this.doesVersionSendPushMessages(psApp.version)) {
+          // There’s an installed platform-specific app that handles sending push messages
+          // No need to handle this via the web app
+          return;
+        }
+      } catch (error) {
+        console.error("Error checking installed related apps:", error);
+      }
+    },
+
   },
 }
 </script>

@@ -35,12 +35,23 @@ module.exports = defineConfig({
           "type": "image/png"
         },
       ],
+      "related_applications": [
+        {
+          "platform": "play",
+          "url": "https://play.google.com/store/apps/details?id=com.example.myapp"
+        },
+        {
+          "platform": "itunes",
+          "url": "https://itunes.apple.com/app/example-myapp/id123456789"
+        }
+      ],
+      "prefer_related_applications": true,
       workboxPluginMode: 'InjectManifest',
       workboxOptions: {
         swSrc: 'src/sw.js', // path to your customized service worker file
         swDest: 'service-worker.js', // output path in the dist folder
       },
       // Add more options as needed
-    }, 
+    },
   }
 })
