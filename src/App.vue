@@ -8,8 +8,7 @@
     </div>
   </div>
   <!-- Example deep links -->
-  <a href="myapp://path/to/content">Open MyApp on iOS</a>
-  <a href="intent://path/to/content#Intent;scheme=myapp;end">Open MyApp on Android</a>
+   <a href="myapp://path/to/content">Open MyApp on Android</a>
 
   <HelloWorld msg="Welcome to Your Vue.js App" />
 </template>
@@ -30,7 +29,7 @@ export default {
   components: {
     HelloWorld
   },
-  async mounted(){
+  async mounted() {
     await this.checkInstalledRelatedApps();
   },
   created() {
@@ -120,15 +119,16 @@ export default {
         // Try to open the app using deep linking
         window.location.href = 'myapp://path/to/content';
 
-        // Set a timeout to navigate to the fallback URL if the app doesn't open
+        // Set a longer timeout for the fallback URL if the app doesn't open
         setTimeout(() => {
-          window.location.href = 'com.example.myapp';
-        }, 2000); // 2 seconds timeout (adjust as needed)
+          window.location.href = 'https://65696ff4bb909255ee04d781--radiant-mermaid-5d059e.netlify.app/';
+        }, 5000); // 5 seconds timeout (adjust as needed)
       } else {
         // Show the install prompt
         this.installApp();
       }
     },
+
     async checkInstalledRelatedApps() {
       try {
         // Use Vue's $nextTick to ensure the DOM is updated before console.table

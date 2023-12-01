@@ -1,4 +1,6 @@
-const { defineConfig } = require('@vue/cli-service')
+// vue.config.js
+const { defineConfig } = require('@vue/cli-service');
+
 module.exports = defineConfig({
   transpileDependencies: true,
   pwa: {
@@ -10,48 +12,56 @@ module.exports = defineConfig({
       msTileImage: 'images/logo.png',
     },
     manifestOptions: {
-      name: "Fabricator",
-      short_name: "Fabricator",
-      description: "Fabricator",
-      start_url: "./",
-      display: "standalone",
-      background_color: "#ffffff",
-      theme_color: "#000000",
-      orientation: "portrait",
-      "icons": [
+      name: 'Fabricator',
+      short_name: 'Fabricator',
+      description: 'Fabricator',
+      start_url: './',
+      display: 'standalone',
+      background_color: '#ffffff',
+      theme_color: '#000000',
+      orientation: 'portrait',
+      icons: [
         {
-          "src": "img/logo.png",
-          "sizes": "72x72",
-          "type": "image/png"
+          src: 'img/logo.png',
+          sizes: '72x72',
+          type: 'image/png',
         },
         {
-          "src": "img/logo.png",
-          "sizes": "96x96",
-          "type": "image/png"
+          src: 'img/logo.png',
+          sizes: '96x96',
+          type: 'image/png',
         },
         {
-          "src": "img/logo.png",
-          "sizes": "192x192",
-          "type": "image/png"
+          src: 'img/logo.png',
+          sizes: '192x192',
+          type: 'image/png',
         },
       ],
-      "related_applications": [
+      related_applications: [
         {
-          "platform": "play",
-          "url": "https://play.google.com/store/apps/details?id=com.example.myapp"
+          platform: 'play',
+          url: 'https://play.google.com/store/apps/details?id=com.example.myapp',
         },
         {
-          "platform": "itunes",
-          "url": "https://itunes.apple.com/app/example-myapp/id123456789"
-        }
+          platform: 'itunes',
+          url: 'https://itunes.apple.com/app/example-myapp/id123456789',
+        },
       ],
-      "prefer_related_applications": true,
+      prefer_related_applications: true,
       workboxPluginMode: 'InjectManifest',
       workboxOptions: {
         swSrc: 'src/sw.js', // path to your customized service worker file
         swDest: 'service-worker.js', // output path in the dist folder
       },
-      // Add more options as needed
+      deepLinks: [
+        
+        // Add deep linking configuration here
+        {
+          start_url: 'myapp://path/to/content',
+          end_url: '/',
+          id: 'com.example.myapp',
+        },
+      ],
     },
-  }
-})
+  },
+});
