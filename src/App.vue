@@ -12,8 +12,7 @@
       </div>
     </div>
     <!-- Example deep links -->
-    <a href="myapp://path/to/content">Open MyApp on Android</a>
-
+    <a  href="fabricator://">Open PWA App</a>
     <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>
