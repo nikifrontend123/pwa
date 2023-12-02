@@ -3,18 +3,50 @@
     <p>Do you want to use our PWA for a better experience?</p>
     <button @click="handleBeforeInstallPrompt">Yes, switch to PWA</button>
     <button @click="dismissPrompt">No, thanks</button>
+    <button @click="test">Test</button>
   </div>
 </template>
 
 <script>
+import Pusher from 'pusher-js';
 export default {
   data() {
     return {
       showPrompt: false,
     };
   },
+
   mounted() {
+    console.log('mounted')
     this.checkPwaStatus();
+    // this.pusher = new Pusher('376226d34fa363ee0c8d', {
+    //   cluster: 'ap2',
+    //   debug: true
+    // });
+
+    // const channel = this.pusher.subscribe('Test-channel');
+    // console.log('notification aa gya')
+    // channel.bind('fpaipl-event')
+
+    try {
+      const pusher = new Pusher('376226d34fa363ee0c8d', {
+        cluster: 'ap2',
+        // Remove debug mode in production
+        debug: false
+      });
+
+      const channel = pusher.subscribe('Test-channel');
+
+      channel.bind('Test-event', function (data) {
+        // Handle the event data
+        console.log('Notification received:', data);
+      });
+
+    } catch (error) {
+      console.error('Error initializing Pusher:', error);
+    }
+
+
   },
   methods: {
     checkPwaStatus() {
@@ -22,6 +54,11 @@ export default {
         this.showPrompt = true;
       }
     },
+    test() {
+
+
+    },
+
     async handleBeforeInstallPrompt(event) {
       try {
         const relatedApps = await navigator.getInstalledRelatedApps();
